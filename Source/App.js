@@ -51,6 +51,15 @@ var homeCameraView = {
 //Sets the default view and goes to location
 viewer.scene.camera.setView(homeCameraView);
 
+/*
+    Enable the home button to return to airport starting point rather than zoomed out at globe
+    *TODO* Camera home button does not work. Resets to default zoomed out view. Need to fix (Will leave in for now, doesn't error out)
+*/
+viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
+    e.cancel = true;
+    viewer.scene.camera.flyTo(homeCameraView);
+});
+
 // Set up clock and timeline.
 viewer.clock.shouldAnimate = true; // default
 /*
@@ -64,5 +73,14 @@ viewer.clock.multiplier = 2; // sets a speedup
 viewer.clock.clockStep = Cesium.ClockStep.SYSTEM_CLOCK_MULTIPLIER; // tick computation mode
 viewer.clock.clockRange = Cesium.ClockRange.LOOP_STOP; // loop at the end
 viewer.timeline.zoomTo(viewer.clock.startTime, viewer.clock.stopTime); // set visible range
+
+/*
+    Adding Spacial data to Cesium using Entities. There are three vector formats (positional) supported by cesium
+    GeoJson, KML, and their own CZML format. Entities are objects that can represent a point in time and space
+    and Cesium can add graphical representation to those points
+    (Main form of flight data representation for our project)
+    *TODO* Add spacial data and frame code for easy data representation (Dynamic needed)
+*/
+
 
 
