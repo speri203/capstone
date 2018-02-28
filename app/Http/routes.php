@@ -67,3 +67,9 @@ Route::controllers([
     'auth' => 'Auth\AuthController',
     'password' => 'Auth\PasswordController',
 ]);
+
+Route::get('test','TestController@testView');
+Route::get('turnToFinal','TurnToFinalController@start');
+
+Route::get('ttf/runQuery','TurnToFinalController@runQuery');
+

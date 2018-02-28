@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel {
 		//		 ->hourly();
 
         //automatically handle web import when called by CRON job
-        $result = \DB::select("SELECT count(`id`) AS 'count' FROM fdmdm.`jobs`");
+        $result = \DB::select("SELECT count(`id`) AS 'count' FROM fdmdm2.`jobs`");
         $count = $result[0]->count;
 
         for($i = 0; $i < $count; $i++){

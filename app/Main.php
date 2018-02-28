@@ -2,6 +2,7 @@
 namespace NGAFID;
 
 use Eloquent;
+use DB;
 
 /**
  * NGAFID\Main

@@ -37,16 +37,16 @@ return [
 
         'database' => [
             'driver'   => 'database',
-            'database' => 'fdmdm',
-            'table'    => 'fdmdm.jobs',
+            'database' => 'fdmdm2',
+            'table'    => 'fdmdm2.jobs',
             'queue'    => 'webImport',
             'expire'   => 60,
         ],
 
         'cryptosystem' => [
             'driver'   => 'database',
-            'database' => 'fdmdm',
-            'table'    => 'fdmdm.jobs',
+            'database' => 'fdmdm2',
+            'table'    => 'fdmdm2.jobs',
             'queue'    => 'encryptionQueue',
             'expire'   => 60,
         ],
@@ -95,7 +95,7 @@ return [
     */
 
     'failed' => [
-        'database' => 'fdmdm',
+        'database' => 'fdmdm2',
         'table'    => 'failed_jobs',
     ],
 
