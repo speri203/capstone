@@ -71,5 +71,5 @@ Route::controllers([
 Route::get('test','TestController@testView');
 Route::get('turnToFinal','TurnToFinalController@start');
 
-Route::get('ttf/runQuery','TurnToFinalController@runQuery');
-
+Route::get('turnToFinal/runQuery','TurnToFinalController@runQuery');
+Route::get('turnToFinal/viewFlights','TurnToFinalController@viewFlights');

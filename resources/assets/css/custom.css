@@ -8,6 +8,7 @@ html, body {
     height: 100%;
 }
 
+
 .navbar, .footer {
     background-color: rgba(235, 250, 255, 0.7) !important;
     background: transparent;
