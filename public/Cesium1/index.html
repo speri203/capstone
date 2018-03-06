@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Use correct character set. -->
+    <meta charset="utf-8">
+    <!-- Tell IE to use the latest, best version. -->
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <!-- Make the application on mobile take up the full browser screen and disable user scaling. -->
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <title>NGAFID</title>
+    <!-- The Cesium library. -->
+    <script src="ThirdParty/Cesium/Cesium.js"></script>
+    <style>@import url(ThirdParty/Cesium/Widgets/widgets.css);</style>
+    <link rel="stylesheet" href="index.css" media="screen">
+</head>
+<body>
+<!-- A container for the Cesium Viewer to live in. -->
+<div id="cesiumContainer">
+        <!-- User interface in order to interact with specific flights-->
+        <div id="flightDataPane"> 
+            <h2>User Flight Data</h2>
+            <span><strong>Select Flight</strong></span>
+            <select id="flightNumber">
+                <option id="001">001</option>
+                <option id="002">002</option>
+                <option id="003">003</option>
+            </select>
+        </div>
+
+</div>
+
+<!-- Our application code. -->
+<script src="Source/App.js"></script>
+
+</body>
+</html>
