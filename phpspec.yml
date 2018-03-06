@@ -1,5 +1,0 @@
-suites:
-    main:
-        namespace: NGAFID
-        psr4_prefix: NGAFID
-        src_path: app
