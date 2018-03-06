@@ -81,6 +81,9 @@ viewer.timeline.zoomTo(viewer.clock.startTime, viewer.clock.stopTime); // set vi
     (Main form of flight data representation for our project)
     *TODO* Add spacial data and frame code for easy data representation (Dynamic needed)
 */
-
+var flightData = Cesium.CzmlDataSource.load('./Source/FlightData/flight.czml'); //This is a static file with only one flights data. Need to be dynamic
+flightData.then(function(dataSource) {
+    viewer.dataSource.add(dataSource);
+});
 
 
