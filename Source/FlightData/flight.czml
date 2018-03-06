@@ -2,14 +2,15 @@
 	{
 		"id": "flight001"
 		"flightPosition":{
-			"epoch": "2012-04-30T12:00Z",
 			"cartographicDegrees": [
-				"Time_frame", 0,0,0,
-				"TIme_frame"
+				 -97.1471939,47.9760742,0
 			]
 		},
-		"point": {
-			"color": {"rgba": [0, 0, 255, 255] },
+		"path": {
+			"color": {"rgba": [0, 0, 255, 255],
+				"show":[{"boolean": true}],
+				trailTime: 0
+			 },
 		}
 	},
 
