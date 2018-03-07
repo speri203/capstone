@@ -67,15 +67,17 @@ class TurnToFinalController extends Controller {
 			foreach ($data as $datum) {
 				$flightStr .= "$datum->longitude,";
 				$flightStr .= "$datum->latitude,";
-				$flightStr .= "$datum->altitude,";
+				// $flightStr .= "$datum->msl_altitude,";
 			}
 
 			//add the array to the output. key is the flight id and the value is an array of points.
-			$output["f$flightID"]=$flightStr;
+			// $output["f$flightID"]=$flightStr;
+			$output = $flightStr;
 		}		
 
 		// echo "<pre>";
 		$json = json_encode($output);
+
 		// echo "\n";
 		// print_r(json_decode($json));
 		// echo "</pre>";
