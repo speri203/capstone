@@ -58,15 +58,14 @@ class TurnToFinalController extends Controller {
 								->limit($timeOnFinal)->get();
 
 			//create an array for the flight, add the longitudes and latitudes
-			$flightArray = array();
+			$flightStr = "";
 			foreach ($data as $datum) {
-				array_push($flightArray, $datum->longitude);
-				array_push($flightArray, $datum->latitude);
-				array_push($flightArray, 0);
+				$flightStr .= "$datum->longitude,";
+				$flightStr .= "$datum->latitude,";
 			}
 
 			//add the array to the output. key is the flight id and the value is an array of points.
-			array_push($output, $flightArray);
+			array_push($output, $flightStr);
 		}		
 
 		echo "<pre>";
