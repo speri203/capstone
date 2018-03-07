@@ -1,0 +1,19 @@
+[
+	{
+		"id": "flight001"
+		"flightPosition":{
+			"epoch": "2012-04-30T12:00Z",
+			"cartographicDegrees": [
+				"Time_frame", 0,0,0,
+				"TIme_frame"
+			]
+		},
+		"point": {
+			"color": {"rgba": [0, 0, 255, 255] },
+		}
+	},
+
+	{
+		"id": "This is for seperate appending"
+	}
+]
