@@ -24,65 +24,65 @@ class TurnToFinalController extends Controller {
 	*/
 	public function runQuery(Request $request)
 	{
-
+		//initialize the output
 		$output = array();
+		
+		//get the string of IDs from the request and convert it into an array
+		$idString = $request->flightIDs;
+		$flightIDs = explode(',',$idString);
 
-		// if ($request->flightIDs)
-		// {	
-		// 	echo "LOL";
-		// }
-			$idString = $request->flightIDs;
-			$flightIDs = explode(',',$idString);
-
+		//for each flight ID in the array, add the spacial data from the final approach to the output
 		foreach ($flightIDs as $flightID)
 		{
+			//find the start time of the flight, convert it to seconds from 0:00
 			$startTime = FID::where('id',$flightID)->get()->toArray();
 			$startTime = array_pop($startTime)['time'];
 			$startTimeInSeconds = $this->timeToSeconds($startTime);
 
+			//find the time of the turn-to-final, convert it to seconds
 			$finalInfo = SA::where('flight',$flightID)->get()->toArray();
 			$finalInfo = array_pop($finalInfo);
 			$timeOfFinal = $finalInfo['timeOfFinal'];
 			$tofInSeconds = $this->timeToSeconds($timeOfFinal);
-			$timeOnFinal = $finalInfo['timeOnFinal'];
-			$finalBeginTime = ($tofInSeconds-$startTimeInSeconds)*1000;
 
+			//find the time (in milliseconds) that we need to start pulling data from the database
+			//ttf begin time = (total flight time - flight start time) * 1000
+			$finalBeginTime = ($tofInSeconds-$startTimeInSeconds)*1000;
+			
+			//pull the time on final from the database. This tells us how many rows to pull
+			$timeOnFinal = $finalInfo['timeOnFinal'];
+
+			//pull lat and long data from main table. Limit to the value in timeOnFinal
 			$data = Main::where('flight',$flightID)
 								->where('time','>=',$finalBeginTime)
 								->limit($timeOnFinal)->get();
 
+			//create an array for the flight, add the longitudes and latitudes
 			$flightArray = array();
 			foreach ($data as $datum) {
-				$tempArr = array();
-				array_push($tempArr, $datum->latitude);
-				array_push($tempArr, $datum->longitude);
-				array_push($flightArray, $tempArr);
+				array_push($flightArray, $datum->longitude);
+				array_push($flightArray, $datum->latitude);
+				array_push($flightArray, 0);
 			}
 
-			$output[$flightID]=$flightArray;
+			//add the array to the output. key is the flight id and the value is an array of points.
+			array_push($output, $flightArray);
 		}		
 
 		echo "<pre>";
-		print_r($output);
-		// echo "finalBeginTime: $finalBeginTime\n";
-		// // print_r($arr=explode(':',$startTime));
-		// // echo "\n";
-		// // var_dump($seconds = $arr[0]*60**2+$arr[1]*60+$arr[2]);
-		// // echo "\n";
-		// echo "flightID: $flightID\n";
-		// echo "startTime: $startTime\n";
-		// echo "startTimeInSeconds: $startTimeInSeconds\n";
-		// echo "$timeOfFinal\n";
-		// echo "$tofInSeconds\n";
-		// foreach ($flights as $key => $value) {
-		// 	echo $value->time."\n";
-		// }
+		echo $json = json_encode($output);
+		echo "\n";
+		print_r(json_decode($json));
+
 		echo "</pre>";
 	}
 
 	private function timeToSeconds($inTime)
 	{
+		//inTime is provided as hh:mm:ss, so we split by ':'
 		$timeArray = explode(":",$inTime);
+
+		//convert the time to seconds. hh*60^2 + mm 8 60 + ss
 		$seconds = $timeArray[0]*60**2+$timeArray[1]*60+$timeArray[2];
 		return $seconds;
 	}

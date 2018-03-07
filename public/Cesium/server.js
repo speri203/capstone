@@ -1,7 +1,6 @@
+/*eslint-env node*/
 (function() {
-    "use strict";
-    /*global console,require,__dirname,process*/
-    /*jshint es3:false*/
+    'use strict';
 
     var express = require('express');
     var compression = require('compression');
@@ -37,16 +36,24 @@
 
     // eventually this mime type configuration will need to change
     // https://github.com/visionmedia/send/commit/d2cb54658ce65948b0ed6e5fb5de69d022bef941
+    // *NOTE* Any changes you make here must be mirrored in web.config.
     var mime = express.static.mime;
     mime.define({
         'application/json' : ['czml', 'json', 'geojson', 'topojson'],
-        'model/vnd.gltf+json' : ['gltf'],
-        'model/vnd.gltf.binary' : ['bgltf'],
+        'image/crn' : ['crn'],
+        'image/ktx' : ['ktx'],
+        'model/gltf+json' : ['gltf'],
+        'model/gltf.binary' : ['bgltf', 'glb'],
         'text/plain' : ['glsl']
     });
 
     var app = express();
     app.use(compression());
+    app.use(function(req, res, next) {
+        res.header("Access-Control-Allow-Origin", "*");
+        res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+        next();
+    });
     app.use(express.static(__dirname));
 
     function getRemoteUrlFromParam(req) {
