@@ -73,3 +73,4 @@ Route::get('turnToFinal','TurnToFinalController@start');
 
 Route::get('turnToFinal/runQuery','TurnToFinalController@runQuery');
 Route::get('turnToFinal/viewFlights','TurnToFinalController@viewFlights');
+Route::get('turnToFinal/display','TurnToFinalController@displayFlights');

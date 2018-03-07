@@ -1,4 +1,9 @@
-<?php namespace NGAFID\Http\Controllers;
+<?php
+/*
+*Austin Holtz
+*/ 
+
+namespace NGAFID\Http\Controllers;
 
 use NGAFID\Http\Requests;
 use NGAFID\Http\Controllers\Controller;
@@ -57,23 +62,24 @@ class TurnToFinalController extends Controller {
 								->where('time','>=',$finalBeginTime)
 								->limit($timeOnFinal)->get();
 
-			//create an array for the flight, add the longitudes and latitudes
+			//create a string for the flight, add the longitudes and latitudes
 			$flightStr = "";
 			foreach ($data as $datum) {
 				$flightStr .= "$datum->longitude,";
 				$flightStr .= "$datum->latitude,";
+				$flightStr .= "$datum->altitude,";
 			}
 
 			//add the array to the output. key is the flight id and the value is an array of points.
-			array_push($output, $flightStr);
+			$output["f$flightID"]=$flightStr;
 		}		
 
-		echo "<pre>";
-		echo $json = json_encode($output);
-		echo "\n";
-		print_r(json_decode($json));
-
-		echo "</pre>";
+		// echo "<pre>";
+		$json = json_encode($output);
+		// echo "\n";
+		// print_r(json_decode($json));
+		// echo "</pre>";
+		return view('turnToFinalDisplay')->withData($json);
 	}
 
 	private function timeToSeconds($inTime)
@@ -97,6 +103,8 @@ class TurnToFinalController extends Controller {
 		return view('turnToFinal')->withFlights($flightList);
 
 	}
+
+	
 
 	/**
 	 * Display a listing of the resource.
