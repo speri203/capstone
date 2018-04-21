@@ -30,24 +30,42 @@ class TurnToFinalController extends Controller {
 	public function runQuery(Request $request)
 	{
 		//initialize the output
-		$output = array();
+		$output = "";
 		
 		//get the string of IDs from the request and convert it into an array
-		$idString = $request->flightIDs;
-		$flightIDs = explode(',',$idString);
+		$startDate = $request->start;
+		$endDate = $request->end;
+		$flights = FID::where('date','>=',$startDate)
+						->where('date','<=',$endDate)
+						->get();
+
 
 		//for each flight ID in the array, add the spacial data from the final approach to the output
-		foreach ($flightIDs as $flightID)
+		foreach ($flights as $flight)
 		{
-			//find the start time of the flight, convert it to seconds from 0:00
+
+
+			
+
+			$flightID=$flight->id;
+			//find the start time of the flight
 			$startTime = FID::where('id',$flightID)->get()->toArray();
+			//retrieve the time of the final approach
 			$startTime = array_pop($startTime)['time'];
+			
+
+			//convert time to seconds from 00:00
 			$startTimeInSeconds = $this->timeToSeconds($startTime);
 
 			//find the time of the turn-to-final, convert it to seconds
 			$finalInfo = SA::where('flight',$flightID)->get()->toArray();
 			$finalInfo = array_pop($finalInfo);
 			$timeOfFinal = $finalInfo['timeOfFinal'];
+
+			//some tables are missing this data for a given flight. This skips those flights.
+			if (!isset($timeOfFinal)) continue;
+			if ($finalInfo['airport_id']!=$request->airport) continue;
+			
 			$tofInSeconds = $this->timeToSeconds($timeOfFinal);
 
 			//find the time (in milliseconds) that we need to start pulling data from the database
@@ -72,7 +90,7 @@ class TurnToFinalController extends Controller {
 
 			//add the array to the output. key is the flight id and the value is an array of points.
 			// $output["f$flightID"]=$flightStr;
-			$output = $flightStr;
+			$output .= "$flightStr ";
 		}		
 
 		// echo "<pre>";
@@ -81,6 +99,7 @@ class TurnToFinalController extends Controller {
 		// echo "\n";
 		// print_r(json_decode($json));
 		// echo "</pre>";
+		
 		return view('turnToFinalDisplay')->withData($json);
 	}
 

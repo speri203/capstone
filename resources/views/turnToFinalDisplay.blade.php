@@ -27,7 +27,7 @@
             'use strict';
             //Sandcastle_Begin
             Cesium.BingMapsApi.defaultKey = 'AoUP29Z-v0eqHOJaE4BaVhYJ1XuRZX04Oeiiw8if5KliJq7BbbJw9t0IrPe-Uix1';
-            var viewer = new Cesium.Viewer('cesiumContainer');
+            var viewer = new Cesium.Viewer('cesiumContainer',{sceneMode : Cesium.SceneMode.SCENE2D});
 
             var gfLocation = new Cesium.Cartesian3.fromDegrees(-97.181238, 47.957674, 2631.0827);
 
@@ -40,38 +40,35 @@
                 }
             };
 
-            viewer.scene.camera.setView(homeCameraView);
-            viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
-    e.cancel = true;
-    viewer.scene.camera.flyTo(homeCameraView);
+    //         viewer.scene.camera.setView(homeCameraView);
+    //         viewer.homeButton.viewModel.command.beforeExecute.addEventListener(function (e) {
+    // e.cancel = true;
+    // viewer.scene.camera.flyTo(homeCameraView);
 
     <?php
         echo "var obj = $data;";
     ?>
 
-    var points = obj.split(',');
-    points.pop();
-    console.log(points);
-    var string;
-    for(var i = 0; i < points.length; i++) {
-        string = points[i] + ',';
-    }
+    var flights = obj.split(' ');
+    flights.pop();
+    // console.log(flights);
+    flights.forEach(function(element)
+    {
+        var points = element.split(',');
+        points.pop();
+        console.log(points);
+        var flightPath = viewer.entities.add({
+            polyline: {
+            positions: Cesium.Cartesian3.fromDegreesArray(points),
+            // positions: Cesium.Cartesian3.fromDegreesArrayHeights([]), //Includes heights for the lines as well
+            width: 2,
+            material: 'FFFFFF'
+        }});
+    });
 
-    var flightPath = viewer.entities.add({
-    name: "Test flight",
-    polyline: {
-        <?php
-        $newstr = chop($data,',');
-        echo "positions: Cesium.Cartesian3.fromDegreesArray(points),"; 
-        ?>
-        // positions: Cesium.Cartesian3.fromDegreesArrayHeights([]), //Includes heights for the lines as well
-        width: 2,
-        material: Cesium.Color.RED
-    }
-});
+   
 viewer.zoomTo(viewer.entities);
 
-});
 
 // Set up clock and timeline.
 viewer.clock.shouldAnimate = true; // default
